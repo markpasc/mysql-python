@@ -297,8 +297,9 @@ class Connection(_mysql.connection):
                     raise NotSupportedError("server is too old to set charset")
                 self.query('SET NAMES %s' % charset)
                 self.store_result()
-        self.string_decoder.charset = charset
-        self.unicode_literal.charset = charset
+        py_charset = 'utf8' if charset == 'utf8mb4' else charset
+        self.string_decoder.charset = py_charset
+        self.unicode_literal.charset = py_charset
 
     def set_sql_mode(self, sql_mode):
         """Set the connection sql_mode. See MySQL documentation for
